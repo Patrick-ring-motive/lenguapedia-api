@@ -1,0 +1,65 @@
+.top-bar,
+.mobile-news,
+.mv-ad-box,
+.wprm-share,
+.wprm-call-to-action,
+.entry-footer,
+.entry-comments,
+.comment-respond,
+.akismet_comment_form_privacy_notice,
+.sidebar,
+.footer-seen-on,
+.footer-widgets,
+footer,
+.wp-block-button:has([href*="pinterest"]),
+.recipe-try-block,
+iframe[src="https://sda.fyi/topics/"],
+.recommended-block,
+.post-disclosure,
+img[alt="Love From The oven"],
+[id="social"],
+.dpsp-show-total-share-count,
+.code-block:has([href*="disclosure"]),
+[id="home-newsletter"],
+[id="home-featured"],
+[style="background-color:#ffc1d0"],
+.seva-form,
+[class*="related-posts"],
+.trending-content,
+.instagram-content,
+[id="dpsp-floating-sidebar"],
+.entry-comments-link,
+[href="#related-recipes"],
+[id="related-recipes"],
+[href="https://lowcarbyumcom.weblet.repl.co/crock-pot-ground-beef-eggplant-casserole/"],
+ul:has([href*="daikon-and-sausage-casserole"]),
+small:has([href*="https://www.facebook.com/lowcarbyum"]),
+p:has(a[href*="30-easy-low-carb-ground-meat-recipes"]),
+.wprm-recipe-print,
+.wprm-recipe-pin,
+.wprm-recipe-jump-to-comments,
+.after-entry,
+.feast-prev-next,
+small
+{
+   display: none !important;
+   visibility: hidden !important;
+   opacity: 0 !important;
+   max-height: 0px !important;
+   height: 0px !important;
+   transform: scale(0,0) !important;
+   position: absolute !important;
+   z-index: -99 !important;
+}
+
+svg,
+img,
+video,
+iframe,
+.vjs-poster,
+.mv-video-target
+{
+  border-radius:1vmax;
+  boder-style:none !important;
+  filter:drop-shadow(0 0 0.25rem black);
+}
