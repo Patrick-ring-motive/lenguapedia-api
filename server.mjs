@@ -21,6 +21,37 @@ export async function serverRequestResponse(reqDTO){
   let pat = path.split('?')[0].split('#')[0];
 
 let response;
+  
+if(path.startsWith('/corsFetch')){
+
+ let apiURL = new URL(request.url);
+ let apiURLString = apiURL.pathname
+                    .replace('/corsFetch/','')
+                    .replace('/','//')
+                    .replace('///','//')+
+                    apiURL.search;
+ 
+ let resp = await fetch(apiURLString);
+ let res = new Response(resp.body,resp);
+ response = cleanResponse(res);
+}
+
+if(path.startsWith('/corsFetchStyles')){
+
+    let apiURL = new URL(reqDTO.url);
+    let apiURLString = apiURL.pathname
+                       .replace('/corsFetchStyles/','')
+                       .replace('/','//')
+                       .replace('///','//')+
+                       apiURL.search;
+    
+    let resp = await fetch(apiURLString);
+    let body = await resp.text();
+    body = body.replace(/http/gi,'https://lenguapedia-api.vercel.app/corsFetch/http');
+    let res = new Response(body,resp);
+    response = cleanResponse(res);
+   }
+
 if(path.startsWith('/broadSearch')){
 
 
@@ -92,4 +123,27 @@ globalThis.broadSearch=async function(query){
   cse_response=cse_response.join('');
   cse_response=cse_response.replace(/wikipedia/gi,'lenguapedia');
   return cse_response;
+}
+
+
+
+
+
+
+function cleanResponse(response){
+    response.headers.delete('Access-Control-Allow-Origin');     
+    response.headers.set('Access-Control-Allow-Origin',"*");
+    response.headers.delete('Access-Control-Allow-Methods');
+    response.headers.delete('Access-Control-Allow-Headers');
+    response.headers.delete('Access-Control-Allow-Credentials');
+    response.headers.delete('Access-Control-Max-Age');
+    response.headers.delete('Referrer-Policy');
+    response.headers.delete('Content-Security-Policy');
+    response.headers.delete('X-Frame-Options');
+    response.headers.delete('Strict-Transport-Security');
+    response.headers.delete('X-Content-Type-Options');
+    response.headers.delete('Cross-Origin-Embedder-Policy');
+    response.headers.delete('Cross-Origin-Resource-Policy');
+    response.headers.delete('Cross-Origin-Opener-Policy');
+return response;
 }
