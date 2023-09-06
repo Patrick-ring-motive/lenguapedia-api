@@ -38,7 +38,8 @@ if(path.startsWith('/corsFetch/')){
                     .replace('///','//');
 
  response = await fetch(apiURLString);
-  
+   response = new Response(response.body,response);
+    response = cleanResponse(response);
 }
 
 if(path.startsWith('/corsFetchStyles/')){
