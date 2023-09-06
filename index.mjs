@@ -5,7 +5,7 @@ import { normalizeRequest, mapResHeaders, applyResponse } from './modules/http-f
 import { serverRequestResponse } from './server.mjs';
 
 
-
+process.on('uncaughtException',async e=>console.log(e));
 
 http.createServer(onRequest).listen(3000);
 

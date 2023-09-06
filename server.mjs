@@ -8,6 +8,13 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+globalThis.put=$=>{
+    let obj=Object.create(null);
+    obj.$=$;
+    Object.seal(obj);
+    return obj;
+    };
+
 let hostTarget = 'cse.google.com';
 let hostList = [];
 hostList.push(hostTarget);
@@ -22,28 +29,25 @@ export async function serverRequestResponse(reqDTO){
 
 let response;
   
-if(path.startsWith('/corsFetch')){
+if(path.startsWith('/corsFetch/')){
 
- let apiURL = new URL(request.url);
- let apiURLString = apiURL.pathname
+ 
+ let apiURLString = path
                     .replace('/corsFetch/','')
                     .replace('/','//')
-                    .replace('///','//')+
-                    apiURL.search;
- 
- let resp = await fetch(apiURLString);
- let res = new Response(resp.body,resp);
- response = cleanResponse(res);
+                    .replace('///','//');
+
+ response = await fetch(apiURLString);
+  
 }
 
-if(path.startsWith('/corsFetchStyles')){
+if(path.startsWith('/corsFetchStyles/')){
 
-    let apiURL = new URL(reqDTO.url);
-    let apiURLString = apiURL.pathname
+
+    let apiURLString = path
                        .replace('/corsFetchStyles/','')
                        .replace('/','//')
-                       .replace('///','//')+
-                       apiURL.search;
+                       .replace('///','//');
     
     let resp = await fetch(apiURLString);
     let body = await resp.text();
@@ -58,8 +62,9 @@ if(path.startsWith('/broadSearch')){
    response = new Response(await broadSearch(reqDTO),{headers:{"content-type":"application/json"}});
 
   
-}else{
+}
   
+if(!response){ 
   response = new Response();
   
 }
@@ -68,8 +73,11 @@ if(path.startsWith('/broadSearch')){
 
 
 
-
-      resDTO.body=Buffer.from(await response?.arrayBuffer?.());
+      resDTO = cleanResponse(resDTO);
+      resDTO.body=Buffer.from(
+        (await response?.arrayBuffer?.())
+        ||response.fullBody?.$
+        ||response?.fullBody);
       return resDTO;
 
     
@@ -131,19 +139,40 @@ globalThis.broadSearch=async function(query){
 
 
 function cleanResponse(response){
-    response.headers.delete('Access-Control-Allow-Origin');     
-    response.headers.set('Access-Control-Allow-Origin',"*");
-    response.headers.delete('Access-Control-Allow-Methods');
-    response.headers.delete('Access-Control-Allow-Headers');
-    response.headers.delete('Access-Control-Allow-Credentials');
-    response.headers.delete('Access-Control-Max-Age');
-    response.headers.delete('Referrer-Policy');
-    response.headers.delete('Content-Security-Policy');
-    response.headers.delete('X-Frame-Options');
-    response.headers.delete('Strict-Transport-Security');
-    response.headers.delete('X-Content-Type-Options');
-    response.headers.delete('Cross-Origin-Embedder-Policy');
-    response.headers.delete('Cross-Origin-Resource-Policy');
-    response.headers.delete('Cross-Origin-Opener-Policy');
+    if(!response.headers){response.headers={};}
+    let headers=response.headers;
+    if(headers.delete){
+      headers.delete('Access-Control-Allow-Origin');     
+      headers.delete('Access-Control-Allow-Methods');
+      headers.delete('Access-Control-Allow-Headers');
+      headers.delete('Access-Control-Allow-Credentials');
+      headers.delete('Access-Control-Max-Age');
+      headers.delete('Referrer-Policy');
+      headers.delete('Content-Security-Policy');
+      headers.delete('X-Frame-Options');
+      headers.delete('Strict-Transport-Security');
+      headers.delete('X-Content-Type-Options');
+      headers.delete('Cross-Origin-Embedder-Policy');
+      headers.delete('Cross-Origin-Resource-Policy');
+      headers.delete('Cross-Origin-Opener-Policy');
+    }
+      delete(headers['Access-Control-Allow-Origin']);     
+      delete(headers['Access-Control-Allow-Methods']);
+      delete(headers['Access-Control-Allow-Headers']);
+      delete(headers['Access-Control-Allow-Credentials']);
+      delete(headers['Access-Control-Max-Age']);
+      delete(headers['Referrer-Policy']);
+      delete(headers['Content-Security-Policy']);
+      delete(headers['X-Frame-Options']);
+      delete(headers['Strict-Transport-Security']);
+      delete(headers['X-Content-Type-Options']);
+      delete(headers['Cross-Origin-Embedder-Policy']);
+      delete(headers['Cross-Origin-Resource-Policy']);
+      delete(headers['Cross-Origin-Opener-Policy']);
+  
+      if(headers.set){
+        headers.set('Access-Control-Allow-Origin',"*");
+      }
+      headers['Access-Control-Allow-Origin']='*';
 return response;
 }
