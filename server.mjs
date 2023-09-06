@@ -54,7 +54,24 @@ if(path.startsWith('/corsFetchStyles/')){
     body = body.replace(/http/gi,'https://lenguapedia-api.vercel.app/corsFetch/http');
     let res = new Response(body,resp);
     response = cleanResponse(res);
+    response.fullBody = body;
    }
+if(path.startsWith('/jsonp/')){
+
+
+    let apiURLString = path
+                       .replace('/jsonp/','')
+                       .replace('/','//')
+                       .replace('///','//');
+    
+    let resp = await fetch(apiURLString);
+    let body = await resp.text();
+  body = 'document.currentScript.setAttribute(`response-body`,`'+encodeURIComponent(body)+'`);'
+    let res = new Response(body,resp);
+    res.headers.set('content-type','text/javascript');
+    response = cleanResponse(res);
+    response.fullBody = body;
+  }
 
 if(path.startsWith('/broadSearch')){
 
@@ -70,18 +87,12 @@ if(!response){
 }
 
 
-
-
-
+      resDTO=mapResDTO(resDTO,response);
       resDTO = cleanResponse(resDTO);
-      resDTO.body=Buffer.from(
-        (await response?.arrayBuffer?.())
-        ||response.fullBody?.$
-        ||response?.fullBody);
+      resDTO.body=Buffer.from(response.fullBody||(await response?.arrayBuffer?.()));
       return resDTO;
 
     
-  
 
 
 }

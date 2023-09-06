@@ -10,6 +10,7 @@ process.on('uncaughtException',async e=>console.log(e));
 http.createServer(onRequest).listen(3000);
 
 async function onRequest(req, res) {
+  try{
   req.socket.setNoDelay();
   req.socket.setKeepAlive(true);
   res.socket.setNoDelay();
@@ -19,6 +20,10 @@ async function onRequest(req, res) {
 
   let resDTO = await serverRequestResponse(reqDTO);
   return await applyResponse(res, resDTO);
+  }catch(e){
+    res.statusCode=500;
+    res.end('500 '+e.message);
+  }
 
 }
 
