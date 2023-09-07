@@ -56,6 +56,23 @@ if(path.startsWith('/corsFetchStyles/')){
     let resp = await fetch(apiURLString);
     let body = await resp.text();
     body = body.replace(/http/gi,'https://lenguapedia-api.vercel.app/corsFetch/http');
+    let urls=body.match(/url\([^)]*\)/gi);
+    const urls_length=urls.length;
+    for(let i=0;i<urls_length;i++){try{
+        let original = urls[i].split('(')[1].split(')')[0];
+        let char = '?';
+        if(original.includes('?')){char='&';}
+        if(original.includes('"')){
+            original = origianl.split('"')[1].split('"')[0];
+        }
+        if(original.includes("'")){
+            original = origianl.split("'")[1].split("'")[0];
+        }
+
+        body = body.replace(urls[i],
+                           'url('+original+char+'referer='+request.headers.get('referer')+')');
+
+    }catch(e){continue;}}
     let res = new Response(body,resp);
     response = cleanResponse(res);
     response.fullBody = body;
