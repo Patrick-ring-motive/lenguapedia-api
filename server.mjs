@@ -70,7 +70,7 @@ if(path.startsWith('/corsFetchStyles/')){
         }
 
         body = body.replace(urls[i],
-                           'url('+original+char+'referer='+request.headers.get('referer')+')');
+                           'url('+original+char+'referer='+reqDTO.headers['referer']+')');
 
     }catch(e){continue;}}
     let res = new Response(body,resp);
