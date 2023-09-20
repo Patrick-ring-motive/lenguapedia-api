@@ -110,7 +110,11 @@ if(!response){
 
       resDTO=mapResDTO(resDTO,response);
       resDTO = cleanResponse(resDTO);
-      resDTO.body=Buffer.from(response.fullBody||(await response?.arrayBuffer?.()));
+      try{
+        resDTO.body=Buffer.from(Q(U=>response.fullBody)||(await response?.arrayBuffer?.()));
+      }catch(e){
+        resDTO.body=Buffer.from(await response?.arrayBuffer?.());
+      }
       return resDTO;
 
     
