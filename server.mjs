@@ -63,10 +63,10 @@ if(path.startsWith('/corsFetchStyles/')){
         let char = '?';
         if(original.includes('?')){char='&';}
         if(original.includes('"')){
-            original = origianl.split('"')[1].split('"')[0];
+            original = original.split('"')[1].split('"')[0];
         }
         if(original.includes("'")){
-            original = origianl.split("'")[1].split("'")[0];
+            original = original.split("'")[1].split("'")[0];
         }
 
         body = body.replace(urls[i],
