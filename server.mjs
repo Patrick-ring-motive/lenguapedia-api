@@ -57,7 +57,7 @@ if(path.startsWith('/corsFetchStyles/')){
     let body = await resp.text();
     body = body.replace(/http/gi,'https://lenguapedia-api.vercel.app/corsFetch/http');
     let urls=body.match(/url\([^)]*\)/gi);
-    const urls_length=urls.length;
+    const urls_length=Q(U=>urls.length)||0;
     for(let i=0;i<urls_length;i++){try{
         let original = urls[i].split('(')[1].split(')')[0];
         let char = '?';
@@ -163,7 +163,7 @@ globalThis.broadSearch=async function(query){
   let cse_response = await (await fetch(cse_url)).text();
   cse_response=cse_response.split('google.search.cse.api(')[1].trim();
   cse_response=cse_response.split('');
-  cse_response.length=cse_response.length-2;
+  cse_response.length=Q(U=>cse_response.length-2)||0;
   cse_response=cse_response.join('');
   cse_response=cse_response.replace(/wikipedia/gi,'lenguapedia');
   return cse_response;
