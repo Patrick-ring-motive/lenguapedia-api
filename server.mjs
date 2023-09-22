@@ -32,11 +32,13 @@ let response;
 if(path.startsWith('/corsFetch/')){
 
  
- let apiURLString = path
+  let apiURLString=path;
+ apiURLString = path.split('/corsFetch/');
+ apiURLString=apiURLString[apiURLString.length-1]
                     .replace('/corsFetch/','')
                     .replace('/','//')
                     .replace('///','//');
-
+console.log(apiURLString);
  response = await fetch(apiURLString);
   let body = await response.arrayBuffer();
    response = new Response(body,response);
