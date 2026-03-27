@@ -6,7 +6,9 @@ function getType(obj) {
 
 function isCloudflareRequest(req) {
 
-  if ((getType(req) == 'Request') && (req.headers?.getAll)) { return true; }
+  if ((getType(req) == 'Request') && (req.headers?.getAll)) {
+    return true;
+  }
 
   return false;
 
@@ -14,7 +16,9 @@ function isCloudflareRequest(req) {
 
 function isCloudflareResponse(res) {
 
-  if ((getType(res) == 'Response') && (res.headers?.getAll)) { return true; }
+  if ((getType(res) == 'Response') && (res.headers?.getAll)) {
+    return true;
+  }
 
   return false;
 
@@ -36,7 +40,9 @@ function isNodeHTTPRequest(res) {
 
 function isNodeFetchRequest(req) {
 
-  if ((getType(req) == 'Request') && (globalThis.global)) { return true; }
+  if ((getType(req) == 'Request') && (globalThis.global)) {
+    return true;
+  }
 
   return false;
 
@@ -44,7 +50,9 @@ function isNodeFetchRequest(req) {
 
 function isNodeFetchResponse(res) {
 
-  if ((getType(res) == 'Response') && (globalThis.global)) { return true; }
+  if ((getType(res) == 'Response') && (globalThis.global)) {
+    return true;
+  }
 
   return false;
 
@@ -52,7 +60,9 @@ function isNodeFetchResponse(res) {
 
 function isFetchRequest(req) {
 
-  if ((getType(req) == 'Request') && (!globalThis.global)) { return true; }
+  if ((getType(req) == 'Request') && (!globalThis.global)) {
+    return true;
+  }
 
   return false;
 
@@ -60,7 +70,9 @@ function isFetchRequest(req) {
 
 function isFetchResponse(res) {
 
-  if ((getType(res) == 'Response') && (!globalThis.global)) { return true; }
+  if ((getType(res) == 'Response') && (!globalThis.global)) {
+    return true;
+  }
 
   return false;
 
@@ -102,7 +114,6 @@ function headerCase(str) {
 }
 
 function getCloudflareHeadersDTO(headers) {
-
 
   let headersDTO = {};
   let headersMap = new Map(headers);
@@ -146,10 +157,7 @@ function getCloudflareRequestDTO(req) {
 
 }
 
-
-
 function getCloudflareRequest(reqDTO) {
-
 
   let req = new Request(reqDTO.body, reqDTO);
   req = DTOAssign(reqDTO, req);
@@ -163,7 +171,11 @@ function assignCloudflareRequest(reqDTO, reqObj) {
   let reqDTO_headers = reqDTO.headers;
   req = DTOAssign(reqDTO, req);
   for (key in reqDTO_headers) {
-    if (key.toLowerCase() != 'set-cookie') { req_headers.set(key, reqDTO_headers[key]); } else { req_headers.append(key, reqDTO_headers[key]); }
+    if (key.toLowerCase() != 'set-cookie') {
+      req_headers.set(key, reqDTO_headers[key]);
+    } else {
+      req_headers.append(key, reqDTO_headers[key]);
+    }
 
   }
   req.headers = req_headers;
@@ -180,8 +192,6 @@ function getResponseDTO(res) {
 
 }
 
-
-
 function getResponseDTO(res) {
 
   if (isCloudflareResponse(res)) {
@@ -189,7 +199,6 @@ function getResponseDTO(res) {
   }
 
 }
-
 
 function getCloudflareResponseDTO(res) {
 
@@ -204,10 +213,7 @@ function getCloudflareResponseDTO(res) {
 
   resDTO.headers = getCloudflareHeadersDTO(res.headers);
 
-
   return resDTO;
-
-
 
 }
 
@@ -236,7 +242,6 @@ function getCloudflareResponse(resDTO) {
 
       }
 
-
     }
 
   }
@@ -251,7 +256,11 @@ function assignCloudflareResponse(resDTO, resObj) {
   let resDTO_headers = resDTO.headers;
   res = DTOAssign(resDTO, res);
   for (key in resDTO_headers) {
-    if (key.toLowerCase() != 'set-cookie') { res_headers.set(key, resDTO_headers[key]); } else { res_headers.append(key, resDTO_headers[key]); }
+    if (key.toLowerCase() != 'set-cookie') {
+      res_headers.set(key, resDTO_headers[key]);
+    } else {
+      res_headers.append(key, resDTO_headers[key]);
+    }
 
   }
   res.headers = res_headers;
@@ -259,4 +268,3 @@ function assignCloudflareResponse(resDTO, resObj) {
   return res;
 
 }
-
