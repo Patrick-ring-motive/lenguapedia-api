@@ -1,4 +1,6 @@
-import { addCorsHeaders } from './cors-headers.mjs';
+import {
+  addCorsHeaders
+} from './cors-headers.mjs';
 export async function normalizeRequest(req) {
 
   let reqDTO = {
@@ -10,7 +12,9 @@ export async function normalizeRequest(req) {
       if (!reqDTO[property]) {
         reqDTO[property] = req[property];
       }
-    } catch (e) { continue; }
+    } catch (e) {
+      continue;
+    }
   }
   reqDTO.headers = {};
   for (const property in req.headers) {
@@ -18,7 +22,9 @@ export async function normalizeRequest(req) {
       if (!reqDTO.headers[property]) {
         reqDTO.headers[property] = req.headers[property];
       }
-    } catch (e) { continue; }
+    } catch (e) {
+      continue;
+    }
   }
   if ((req.method != 'GET') && (req.method != 'HEAD')) {
 
@@ -63,12 +69,13 @@ export function mapResHeaders(res, response) {
         res.removeHeader(key);
         res.setHeader(key, value);
       }
-    } catch (e) { continue; }
+    } catch (e) {
+      continue;
+    }
   }
 
   res.removeHeader('content-encoding');
   res.removeHeader('content-length');
-
 
   return res;
 
@@ -81,7 +88,9 @@ export function mapRes(res, response) {
       if (property != 'headers') {
         res[property] = response[property];
       }
-    } catch (e) { continue; }
+    } catch (e) {
+      continue;
+    }
   }
 
   return res;
@@ -90,12 +99,13 @@ export function mapRes(res, response) {
 
 export function mapResDTOHeaders(resDTO, response) {
 
-
   /* copy over response headers  */
 
   for (let [key, value] of response.headers.entries()) {
     key = key.toLowerCase();
-    if (!key.includes('content-encoding') || !key.includes('content-length')) { resDTO.headers[key] = value; }
+    if (!key.includes('content-encoding') || !key.includes('content-length')) {
+      resDTO.headers[key] = value;
+    }
     if (key.includes('content-type')) {
       resDTO.contentType = value;
     }
@@ -103,7 +113,9 @@ export function mapResDTOHeaders(resDTO, response) {
   for (let [key, value] of response.headers.keys()) {
     key = key.toLowerCase();
     if (key.length > 1) {
-      if (!key.includes('content-encoding') || !key.includes('content-length')) { resDTO.headers[key] = value; }
+      if (!key.includes('content-encoding') || !key.includes('content-length')) {
+        resDTO.headers[key] = value;
+      }
       if (key.includes('content-type')) {
         resDTO.contentType = value;
       }
@@ -134,7 +146,9 @@ export async function applyResponse(res, resDTO) {
       if (!res[property]) {
         res[property] = resDTO[property];
       }
-    } catch (e) { continue; }
+    } catch (e) {
+      continue;
+    }
   }
   if (resDTO.headers) {
 
@@ -143,12 +157,16 @@ export async function applyResponse(res, resDTO) {
 
         res.setHeader(property, resDTO.headers[property]);
 
-      } catch (e) { continue; }
+      } catch (e) {
+        continue;
+      }
     }
 
   }
 
-  if (resDTO.contentType) { res.setHeader('content-type', resDTO.contentType); }
+  if (resDTO.contentType) {
+    res.setHeader('content-type', resDTO.contentType);
+  }
   res.removeHeader('content-encoding');
   res.removeHeader('content-length');
 
