@@ -40,16 +40,15 @@ p:has(a[href*="30-easy-low-carb-ground-meat-recipes"]),
 .wprm-recipe-jump-to-comments,
 .after-entry,
 .feast-prev-next,
-small
-{
-   display: none !important;
-   visibility: hidden !important;
-   opacity: 0 !important;
-   max-height: 0px !important;
-   height: 0px !important;
-   transform: scale(0,0) !important;
-   position: absolute !important;
-   z-index: -99 !important;
+small {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  max-height: 0px !important;
+  height: 0px !important;
+  transform: scale(0, 0) !important;
+  position: absolute !important;
+  z-index: -99 !important;
 }
 
 svg,
@@ -57,9 +56,8 @@ img,
 video,
 iframe,
 .vjs-poster,
-.mv-video-target
-{
-  border-radius:1vmax;
-  boder-style:none !important;
-  filter:drop-shadow(0 0 0.25rem black);
+.mv-video-target {
+  border-radius: 1vmax;
+  boder-style: none !important;
+  filter: drop-shadow(0 0 0.25rem black);
 }
