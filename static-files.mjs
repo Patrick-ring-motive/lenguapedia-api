@@ -1,18 +1,19 @@
 import path from 'path';
 import fs from 'fs';
 import mime from 'mime-types';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import {
+  fileURLToPath
+} from 'url';
+import {
+  dirname
+} from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-
-
-
 export function fileFromRequest(url) {
-  let resDTO={}
-  resDTO.url=url;
+  let resDTO = {}
+  resDTO.url = url;
   let URI = url.replaceAll('*', '');
   let shortURI = URI.split('?')[0].split('#')[0];
 
@@ -39,7 +40,4 @@ export function fileFromRequest(url) {
     return resDTO;
   }
 
-
 }
-
-
